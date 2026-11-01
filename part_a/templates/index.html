@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Information System | Week 8(a)</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div>
+        <h1>Student Information System</h1>
+        <p>Week 8(a) &bull; Flask Application with Git Branch Management</p>
+      </div>
+      <span class="badge">Part (a) Lab</span>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for cat, msg in messages %}
+          <div class="alert alert-{{ cat }}">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="grid">
+      <!-- Add Student Form -->
+      <div class="card">
+        <h2 class="card-title">&plus; Register Student</h2>
+        <form method="POST" action="{{ url_for('add_student') }}">
+          <div class="form-group">
+            <label class="form-label">Roll Number / Student ID</label>
+            <input type="text" name="roll_no" class="form-control" placeholder="e.g. 24CS101" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Student Name</label>
+            <input type="text" name="name" class="form-control" placeholder="e.g. Aarav Sharma" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Department</label>
+            <select name="department" class="form-control" required>
+              <option value="" disabled selected>-- Select Department --</option>
+              <option value="Computer Science & Engineering">Computer Science & Engineering</option>
+              <option value="Information Technology">Information Technology</option>
+              <option value="Artificial Intelligence & Data Science">AI & Data Science</option>
+              <option value="Electronics & Communication">Electronics & Communication</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" name="email" class="form-control" placeholder="student@college.edu" required>
+          </div>
+          <button type="submit" class="btn btn-primary">&check; Add Student Record</button>
+        </form>
+      </div>
+
+      <!-- Student Directory Table -->
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+          <h2 class="card-title" style="margin-bottom: 0;">Enrolled Students ({{ students|length }})</h2>
+        </div>
+
+        {% if students %}
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Roll No</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Email</th>
+                <th style="text-align: right;">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for s in students %}
+                <tr>
+                  <td><strong style="color: #93c5fd; font-family: monospace;">{{ s.roll_no }}</strong></td>
+                  <td>{{ s.name }}</td>
+                  <td>{{ s.department }}</td>
+                  <td style="color: var(--text-secondary);">{{ s.email }}</td>
+                  <td style="text-align: right;">
+                    <form method="POST" action="{{ url_for('delete_student', id=s.id) }}" onsubmit="return confirm('Delete student {{ s.name }}?');" style="display:inline;">
+                      <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <p class="empty-msg">No student records found. Register a new student using the form.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Course Registration | Week 8(c)</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div>
+        <h1>Online Student Course Registration System</h1>
+        <p>Week 8(c) &bull; Flask & SQLite with End-to-End Collaborative Git Workflow</p>
+      </div>
+      <span class="badge">Part (c) Lab</span>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for cat, msg in messages %}
+          <div class="alert alert-{{ cat }}">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <!-- Available Courses Catalog -->
+    <div class="card">
+      <h2 class="card-title">
+        <span>📚 Available Academic Courses</span>
+        <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 400;">Fall Semester 2026</span>
+      </h2>
+      <div class="course-list">
+        {% for c in courses %}
+          <div class="course-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span class="course-code">{{ c.code }}</span>
+              <span style="font-size: 0.75rem; background: rgba(6,182,212,0.15); color: #67e8f9; padding: 0.15rem 0.5rem; border-radius: 4px;">{{ c.credits }} Credits</span>
+            </div>
+            <h3 class="course-name">{{ c.title }}</h3>
+            <p class="course-meta">Instructor: {{ c.instructor }}</p>
+            <p class="course-meta" style="margin-top: 0.25rem; color: #34d399;">Enrolled: {{ c.enrolled_count }} students</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- Course Registration Form -->
+      <div class="card">
+        <h2 class="card-title">&plus; Register for Course</h2>
+        <form method="POST" action="{{ url_for('register') }}">
+          <div class="form-group">
+            <label class="form-label">Student Full Name</label>
+            <input type="text" name="student_name" class="form-control" placeholder="e.g. Rohini Sen" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Roll Number / Student ID</label>
+            <input type="text" name="roll_no" class="form-control" placeholder="e.g. 23CS502" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" name="email" class="form-control" placeholder="r.sen@college.edu" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Course Selection</label>
+            <select name="course_id" class="form-control" required>
+              <option value="" disabled selected>-- Choose Course --</option>
+              {% for c in courses %}
+                <option value="{{ c.id }}">{{ c.code }}: {{ c.title }} ({{ c.credits }} cr)</option>
+              {% endfor %}
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">&check; Confirm Registration</button>
+        </form>
+      </div>
+
+      <!-- Enrolled Students Table -->
+      <div class="card">
+        <h2 class="card-title">Enrolled Registrations ({{ registrations|length }})</h2>
+        {% if registrations %}
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Student</th>
+                <th>Roll No</th>
+                <th>Course</th>
+                <th>Registered At</th>
+                <th style="text-align: right;">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for r in registrations %}
+                <tr>
+                  <td>
+                    <strong>{{ r.student_name }}</strong><br>
+                    <span style="font-size: 0.775rem; color: var(--text-muted);">{{ r.email }}</span>
+                  </td>
+                  <td><code style="color: #67e8f9;">{{ r.roll_no }}</code></td>
+                  <td>
+                    <span style="font-weight: 600;">{{ r.course_code }}</span><br>
+                    <span style="font-size: 0.775rem; color: var(--text-secondary);">{{ r.course_title }}</span>
+                  </td>
+                  <td style="font-size: 0.8rem; color: var(--text-muted);">{{ r.registered_at }}</td>
+                  <td style="text-align: right;">
+                    <form method="POST" action="{{ url_for('cancel', id=r.id) }}" onsubmit="return confirm('Cancel registration for {{ r.student_name }}?');" style="display:inline;">
+                      <button type="submit" class="btn btn-danger">Cancel</button>
+                    </form>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+          <p style="text-align: center; color: var(--text-muted); padding: 3rem 1rem;">No course registrations recorded yet. Register for a course using the form.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</body>
+</html>

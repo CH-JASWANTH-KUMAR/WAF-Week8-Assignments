@@ -1,0 +1,47 @@
+/* Week 8 Part (c) - Course Registration Theme */
+:root {
+  --bg-body: #0b1120;
+  --bg-card: #141f36;
+  --bg-input: #0e172a;
+  --border-color: #233554;
+  --border-focus: #3b82f6;
+  --text-main: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --accent-primary: #06b6d4;
+  --accent-hover: #0891b2;
+  --accent-emerald: #10b981;
+  --accent-rose: #f43f5e;
+  --radius: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg-body); color: var(--text-main); line-height: 1.6; padding: 2rem 1.5rem; }
+.container { max-width: 1180px; margin: 0 auto; }
+.header { margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.25rem; display: flex; justify-content: space-between; align-items: center; }
+.header h1 { font-size: 1.85rem; color: #fff; font-weight: 700; }
+.header p { color: var(--text-secondary); font-size: 0.95rem; }
+.badge { display: inline-block; padding: 0.25rem 0.65rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; background: rgba(6,182,212,0.2); color: #67e8f9; border: 1px solid rgba(6,182,212,0.4); }
+.grid { display: grid; grid-template-columns: 380px 1fr; gap: 2rem; }
+@media(max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+.card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 1.75rem; box-shadow: 0 4px 12px rgba(0,0,0,0.3); margin-bottom: 2rem; }
+.card-title { font-size: 1.2rem; margin-bottom: 1.25rem; color: #fff; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+.form-group { margin-bottom: 1.15rem; }
+.form-label { display: block; font-size: 0.825rem; font-weight: 600; color: var(--text-main); margin-bottom: 0.35rem; }
+.form-control { width: 100%; background: var(--bg-input); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.65rem 0.85rem; color: #fff; font-size: 0.9rem; outline: none; }
+.form-control:focus { border-color: var(--border-focus); box-shadow: 0 0 0 3px rgba(6,182,212,0.2); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.65rem 1.25rem; border-radius: 6px; font-size: 0.875rem; font-weight: 600; cursor: pointer; border: none; text-decoration: none; }
+.btn-primary { background: var(--accent-primary); color: #0b1120; font-weight: 700; width: 100%; }
+.btn-primary:hover { background: var(--accent-hover); color: #fff; }
+.btn-danger { background: rgba(244,63,94,0.15); color: #fb7185; border: 1px solid rgba(244,63,94,0.3); padding: 0.35rem 0.75rem; font-size: 0.775rem; }
+.btn-danger:hover { background: var(--accent-rose); color: #fff; }
+.alert { padding: 0.75rem 1rem; border-radius: 6px; font-size: 0.875rem; margin-bottom: 1.25rem; }
+.alert-success { background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.4); color: #34d399; }
+.alert-error { background: rgba(244,63,94,0.15); border: 1px solid rgba(244,63,94,0.4); color: #fb7185; }
+.table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+.table th { background: rgba(11,17,32,0.8); padding: 0.75rem 1rem; text-align: left; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--border-color); }
+.table td { padding: 0.85rem 1rem; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
+.course-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+.course-card { background: var(--bg-input); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; }
+.course-code { font-family: monospace; font-size: 0.85rem; color: #67e8f9; font-weight: 700; }
+.course-name { font-size: 0.95rem; font-weight: 600; color: #fff; margin: 0.25rem 0; }
+.course-meta { font-size: 0.775rem; color: var(--text-secondary); }
