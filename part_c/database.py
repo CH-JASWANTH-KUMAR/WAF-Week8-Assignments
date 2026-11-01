@@ -141,3 +141,12 @@ def cancel_registration(id: int, db_path: Optional[str] = None) -> bool:
     success = cursor.rowcount > 0
     conn.close()
     return success
+
+
+def get_total_enrollments_count(db_path=None) -> int:
+    """Helper added by collaborator to query total registrations count."""
+    conn = get_db_connection(db_path)
+    count = conn.execute("SELECT COUNT(*) FROM registrations").fetchone()[0]
+    conn.close()
+    return count
+
