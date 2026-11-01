@@ -15,8 +15,20 @@ next_id = 4
 
 @app.route("/")
 def index():
-    """Displays student list."""
-    return render_template("index.html", students=students)
+    """Displays student list with optional keyword search filter."""
+    search_query = request.args.get("search", "").strip()
+    if search_query:
+        query_lower = search_query.lower()
+        filtered = [
+            s for s in students
+            if query_lower in s["name"].lower()
+            or query_lower in s["roll_no"].lower()
+            or query_lower in s["department"].lower()
+            or query_lower in s["email"].lower()
+        ]
+    else:
+        filtered = students
+    return render_template("index.html", students=filtered, search_query=search_query)
 
 
 @app.route("/add", methods=["POST"])
