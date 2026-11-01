@@ -1,8 +1,17 @@
 import re
+import logging
 from flask import Flask, render_template, request, redirect, url_for, flash
+
+# Configure audit logging
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 
 app = Flask(__name__)
 app.secret_key = "week8b-github-workflow-secret-key"
+
+@app.before_request
+def log_audit_trail():
+    """Logs incoming student management requests for GitHub audit demonstration."""
+    app.logger.info(f"[AUDIT] {request.method} request received at endpoint: {request.path}")
 
 students = [
     {"id": 1, "roll_no": "23IT102", "name": "Diya Sengupta", "department": "Information Technology", "year": "2nd Year"},
