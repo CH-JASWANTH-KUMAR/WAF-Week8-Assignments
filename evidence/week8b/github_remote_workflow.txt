@@ -1,0 +1,67 @@
+=================================================================
+ Week 8(b): Git & GitHub Remote Workflow Demonstration Output
+ Date: Sun Nov  1 02:04:16 PM IST 2026
+ Remote URL: git@github.com:CH-JASWANTH-KUMAR/WAF-Week8-Assignments.git
+=================================================================
+
+$ git remote -v
+origin	git@github.com:CH-JASWANTH-KUMAR/WAF-Week8-Assignments.git (fetch)
+origin	git@github.com:CH-JASWANTH-KUMAR/WAF-Week8-Assignments.git (push)
+
+$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   part_b/app.py
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	evidence/
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+$ git diff part_b/app.py
+diff --git a/part_b/app.py b/part_b/app.py
+index 3e46e4a..d8d32cb 100644
+--- a/part_b/app.py
++++ b/part_b/app.py
+@@ -1,9 +1,18 @@
+ import re
++import logging
+ from flask import Flask, render_template, request, redirect, url_for, flash
+ 
++# Configure audit logging
++logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
++
+ app = Flask(__name__)
+ app.secret_key = "week8b-github-workflow-secret-key"
+ 
++@app.before_request
++def log_audit_trail():
++    """Logs incoming student management requests for GitHub audit demonstration."""
++    app.logger.info(f"[AUDIT] {request.method} request received at endpoint: {request.path}")
++
+ students = [
+     {"id": 1, "roll_no": "23IT102", "name": "Diya Sengupta", "department": "Information Technology", "year": "2nd Year"},
+     {"id": 2, "roll_no": "22CS215", "name": "Farhan Akhtar", "department": "Computer Science", "year": "3rd Year"},
+
+$ git add part_b/app.py
+
+$ git commit -m "feat(part-b): Add request audit logging hook and enhanced status handling"
+[main d7763f1] feat(part-b): Add request audit logging hook and enhanced status handling
+ 1 file changed, 9 insertions(+)
+
+$ git push origin main
+
+$ git log --oneline -n 5
+d7763f1 feat(part-b): Add request audit logging hook and enhanced status handling
+3ecf6f3 Merge branch 'feature-student-search' into main
+e06f4ae feat(student-search): Implement student keyword search and filter feature
+53c2363 feat: Initial commit of Week 8 WAF laboratory assignments
+
+=================================================================
+ End of Week 8(b) Git & GitHub Remote Workflow Demonstration
+=================================================================

@@ -1,0 +1,108 @@
+=================================================================
+ Week 8(c): Complete Collaborative Git Workflow Demonstration Output
+ Date: Sun Nov  1 02:05:17 PM IST 2026
+ Primary Repo: /home/chjaswanthkumar/college_work/WAF_lab/WAF-Week8-Assignments
+ Remote URL: git@github.com:CH-JASWANTH-KUMAR/WAF-Week8-Assignments.git
+=================================================================
+
+--- 1. Feature Branch Commit & Merge in Primary Workspace ---
+$ git status
+On branch feature-course-limit
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   part_c/app.py
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	evidence/
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+$ git add part_c/app.py
+
+$ git commit -m "feat(courses): Add maximum enrollment limit validation on feature branch"
+[feature-course-limit 02679a2] feat(courses): Add maximum enrollment limit validation on feature branch
+ 1 file changed, 9 insertions(+)
+
+$ git checkout main
+Your branch is up to date with 'origin/main'.
+
+$ git merge feature-course-limit --no-ff -m "Merge branch 'feature-course-limit' into main"
+Merge made by the 'ort' strategy.
+ part_c/app.py | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+$ git branch -d feature-course-limit
+Deleted branch feature-course-limit (was 02679a2).
+
+$ git push origin main
+
+--- 2. Simulated Collaborator Workspace (Second Clone) ---
+$ git clone git@github.com:CH-JASWANTH-KUMAR/WAF-Week8-Assignments.git /tmp/waf_week8_collab_workspace
+
+Collaborator making contribution to part_c/database.py (adding registration count helper)...
+$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   part_c/database.py
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+$ git diff part_c/database.py
+diff --git a/part_c/database.py b/part_c/database.py
+index ab15ca2..83e54ad 100644
+--- a/part_c/database.py
++++ b/part_c/database.py
+@@ -141,3 +141,12 @@ def cancel_registration(id: int, db_path: Optional[str] = None) -> bool:
+     success = cursor.rowcount > 0
+     conn.close()
+     return success
++
++
++def get_total_enrollments_count(db_path=None) -> int:
++    """Helper added by collaborator to query total registrations count."""
++    conn = get_db_connection(db_path)
++    count = conn.execute("SELECT COUNT(*) FROM registrations").fetchone()[0]
++    conn.close()
++    return count
++
+
+$ git add part_c/database.py
+
+$ git commit -m "collab(courses): Add enrollment count aggregate helper function"
+[main 9cb7554] collab(courses): Add enrollment count aggregate helper function
+ 1 file changed, 9 insertions(+)
+
+$ git push origin main
+
+--- 3. Primary Workspace Pulling Collaborator Changes ---
+$ git fetch origin
+
+$ git pull origin main
+Updating eb3e226..9cb7554
+Fast-forward
+ part_c/database.py | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+--- 4. Full Commit Graph Verification ---
+$ git log --graph --oneline --all -n 10
+* 9cb7554 collab(courses): Add enrollment count aggregate helper function
+*   eb3e226 Merge branch 'feature-course-limit' into main
+|\  
+| * 02679a2 feat(courses): Add maximum enrollment limit validation on feature branch
+|/  
+* d7763f1 feat(part-b): Add request audit logging hook and enhanced status handling
+*   3ecf6f3 Merge branch 'feature-student-search' into main
+|\  
+| * e06f4ae feat(student-search): Implement student keyword search and filter feature
+|/  
+* 53c2363 feat: Initial commit of Week 8 WAF laboratory assignments
+
+=================================================================
+ End of Week 8(c) Collaborative Git Workflow Demonstration
+=================================================================
