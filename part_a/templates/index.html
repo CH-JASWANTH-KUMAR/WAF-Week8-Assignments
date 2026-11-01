@@ -61,6 +61,15 @@
           <h2 class="card-title" style="margin-bottom: 0;">Enrolled Students ({{ students|length }})</h2>
         </div>
 
+        <!-- Search Form (Implemented on feature-student-search branch) -->
+        <form method="GET" action="{{ url_for('index') }}" class="search-bar">
+          <input type="text" name="search" class="form-control" placeholder="Search by name, roll no, department..." value="{{ search_query }}">
+          <button type="submit" class="btn btn-secondary">Search</button>
+          {% if search_query %}
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">Reset</a>
+          {% endif %}
+        </form>
+
         {% if students %}
           <table class="table">
             <thead>
