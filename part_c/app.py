@@ -12,6 +12,8 @@ from database import init_db, get_courses, register_student, is_already_register
 app = Flask(__name__)
 app.secret_key = "week8c-course-registration-secret-key"
 
+MAX_ENROLLMENT_CAPACITY = 45
+
 # Ensure SQLite schema is ready
 init_db()
 
@@ -54,6 +56,13 @@ def register():
     # Duplicate registration check
     if is_already_registered(roll_no, c_id):
         flash(f"Student '{roll_no}' is already registered for this course.", "error")
+        return redirect(url_for("index"))
+
+    # Course capacity validation (Implemented on feature-course-limit branch)
+    courses = get_courses()
+    selected_course = next((c for c in courses if c["id"] == c_id), None)
+    if selected_course and selected_course["enrolled_count"] >= MAX_ENROLLMENT_CAPACITY:
+        flash(f"Course '{selected_course['code']}' has reached its maximum enrollment limit of {MAX_ENROLLMENT_CAPACITY}.", "error")
         return redirect(url_for("index"))
 
     register_student(student_name, roll_no, email, c_id)
